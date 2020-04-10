@@ -1,0 +1,35 @@
+server:
+  port: 9094
+spring:
+  application:
+    name: auth-service
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10001/eureka
+    registry-fetch-interval-seconds: 10
+  instance:
+    lease-renewal-interval-in-seconds: 5 # 每隔5秒发送一次心跳
+    lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}:${server.port}
+ribbon:
+  ConnectTimeout: 100
+  ReadTimeout: 600 # 拉取服务的超时时间，解决504错误
+  OkToRetryOnAllOperations: true # 是否对所有的操作都重试
+  MaxAutoRetriesNextServer: 2 # 对同一服务的重试次数
+  MaxAutoRetries: 1 # 对当前服务的重试次数
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1500
+sc:
+  jwt:
+    secret: sc@Login(Auth}*^31)&taoqz% # 登录校验的明文
+    pubKeyPath: D:/rsa/rsa.pub # 公钥地址
+    priKeyPath: D:/rsa/rsa.pri # 私钥地址
+    expire: 30 # 过期时间,单位分钟

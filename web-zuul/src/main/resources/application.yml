@@ -1,0 +1,42 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: api-web-gateway
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://127.0.0.1:10001/eureka
+  instance:
+    prefer-ip-address: true
+zuul:
+  prefix: /v1
+  retryable: true
+  routes:
+    web-service: /web-service/**
+    auth-service: /auth-service/**
+ribbon:
+  ConnectTimeout: 100
+  ReadTimeout: 600
+  OkToRetryOnAllOperations: true
+  MaxAutoRetriesNextServer: 2
+  MaxAutoRetries: 1
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000
+sc:
+  jwt:
+    pubKeyPath: D:/rsa/rsa.pub # 公钥地址
+  filter:
+    allowPaths: # 白名单,放行路径
+      - /auth-service
+      - /sms
+      - /regist
+      - /query
+#      - /demo
